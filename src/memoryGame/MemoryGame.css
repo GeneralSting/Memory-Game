@@ -1,0 +1,26 @@
+img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin: 10px;
+}
+
+.imagePlaceholder {
+  background-color: gray;
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  display: inline-block;
+}
+
+.imagePlaceholder:hover {
+  background-color: lightblue;
+  cursor: pointer;
+}
+
+.imagesWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  max-width: 450px;
+  margin: auto;
+}
