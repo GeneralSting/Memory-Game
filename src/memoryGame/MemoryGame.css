@@ -1,15 +1,15 @@
 img {
   width: 100px;
   height: 100px;
+  margin-top: 10px;
   object-fit: cover;
-  margin: 10px;
 }
 
 .imagePlaceholder {
   background-color: gray;
   width: 100px;
   height: 100px;
-  margin: 10px;
+  margin-top: 10px;
   display: inline-block;
 }
 

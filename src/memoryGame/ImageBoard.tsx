@@ -1,35 +1,65 @@
-import { useState } from "react";
+import { FC, useState } from "react";
+import { ImageType } from "./images";
 
-const ImageBoard = ({ images }) => {
-  const [flippedIndex, setFlippedIndex] = useState(null);
-  const [foundImages, setFoundImages] = useState({});
+type Props = {
+  initialImages: ImageType[];
+};
+const ImageBoard: FC<Props> = ({ initialImages }) => {
+  const [images, setImages] = useState<ImageType[]>(initialImages);
+  const [firstFlipped, setFirstFlipped] = useState<number | null>(null);
 
-  const handleImageClick = (index) => {
-    if (images[flippedIndex] === images[index]) {
-      // if current and previous images match,
-      // make them visible
-      setFoundImages({ ...foundImages, [index]: true, [flippedIndex]: true });
-    }
-    setFlippedIndex(index);
+  const showImage = (index: number) => {
+    const updatedImages: ImageType[] = images.map((image, i) => {
+      if (i === index) {
+        return { ...image, show: true };
+      }
+      return image;
+    });
+    return updatedImages;
   };
 
-  const isImageVisible = (index) => {
-    if (foundImages[index] === true) {
-      // if image was "found"
-      return true;
-    }
-    if (index === flippedIndex) {
-      // if image was just flipped
-      return true;
-    }
-    return false;
+  const hideImages = (firstIndex: number, secondIndex: number) => {
+    const updatedImages: ImageType[] = images.map((image, i) => {
+      if (i === firstIndex || i === secondIndex) {
+        return { ...image, show: false };
+      }
+      return image;
+    });
+    return updatedImages;
   };
+
+  const handleImageClick = (index: number) => {
+    setImages(showImage(index));
+    if (firstFlipped === null) {
+      setFirstFlipped(index);
+    } else {
+      if (images[firstFlipped].name !== images[index].name) {
+        setTimeout(() => {
+          setImages(hideImages(firstFlipped, index));
+        }, 1000);
+      }
+      setFirstFlipped(null);
+    }
+  };
+
+  // const isImageVisible = (index: number) => {
+  //   if (foundImages[index] === true) {
+  //     // if image was "found"
+  //     return true;
+  //   }
+
+  //   if (index === firstFlipped || secondFlipped) {
+  //     // if image was just flipped
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
   return (
     <div className="imagesWrapper">
       {images.map((image, index) =>
-        isImageVisible(index) ? (
-          <img src={image} />
+        image.show ? (
+          <img src={image.url} />
         ) : (
           <div
             className="imagePlaceholder"
