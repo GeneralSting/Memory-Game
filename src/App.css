@@ -2,3 +2,127 @@
   font-family: sans-serif;
   text-align: center;
 }
+
+.mb-8 {
+  margin-bottom: 4rem;
+}
+
+/* -- Game mode selection -- */
+
+.game-list {
+  transform-style: preserve-3d;
+  transform: perspective(2000px);
+}
+
+.game-list .game-item {
+  transition: 0.5s;
+  filter: brightness(0.8);
+}
+
+.game-list .game-item:hover {
+  filter: brightness(1);
+}
+
+.game-list .game-item:hover + * {
+  filter: brightness(0.5);
+  transform: scale(0.8);
+}
+
+.game-list .game-item:hover + * + * {
+  filter: brightness(0.5);
+  transform: scale(0.6);
+}
+
+.game-list .game-item:has(+ *:hover) {
+  filter: brightness(0.5);
+  transform: scale(0.8);
+}
+
+.game-mode-clicked {
+  transform: scale(1.2);
+  filter: brightness(1) !important;
+  cursor: unset !important;
+}
+
+.game-list .game-item:has(+ * + *:hover) {
+  filter: brightness(0.5);
+  transform: scale(0.6);
+}
+
+.game-item:hover {
+  cursor: pointer;
+}
+
+.game-list {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px;
+}
+
+.game-item {
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  width: 25%;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-mode-easy {
+  background: #ccffcc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.game-mode-mid {
+  background: #ffecb3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.game-mode-hard {
+  background: #ff7070;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.game-item .game-title,
+.game-item .game-description {
+  margin: 0 0 10px 0;
+}
+
+.game-item .game-title {
+  font-size: 2em;
+}
+
+.game-item .game-description {
+  font-size: 1.5rem;
+}
+
+.start-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: auto;
+}
+
+.start-section input {
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+.start-section button {
+  flex: 1;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+/* ------- */
