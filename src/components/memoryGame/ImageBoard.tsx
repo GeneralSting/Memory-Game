@@ -1,12 +1,17 @@
 import { FC, useState } from "react";
 import { ImageType } from "./images";
 
-type Props = {
+type ImageBoradProps = {
   initialImages: ImageType[];
 };
-const ImageBoard: FC<Props> = ({ initialImages }) => {
+
+const ImageBoard: FC<ImageBoradProps> = ({ initialImages }) => {
   const [images, setImages] = useState<ImageType[]>(initialImages);
   const [firstFlipped, setFirstFlipped] = useState<number | null>(null);
+
+  const numberOfImages = images.length;
+  const columns = Math.ceil(Math.sqrt(numberOfImages));
+  const rows = Math.ceil(numberOfImages / columns);
 
   const showImage = (index: number) => {
     const updatedImages: ImageType[] = images.map((image, i) => {
@@ -42,26 +47,22 @@ const ImageBoard: FC<Props> = ({ initialImages }) => {
     }
   };
 
-  // const isImageVisible = (index: number) => {
-  //   if (foundImages[index] === true) {
-  //     // if image was "found"
-  //     return true;
-  //   }
-
-  //   if (index === firstFlipped || secondFlipped) {
-  //     // if image was just flipped
-  //     return true;
-  //   }
-  //   return false;
-  // };
-
   return (
-    <div className="imagesWrapper">
+    <div
+      className="imagesWrapper"
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+        gridTemplateRows: `repeat(${rows}, 1fr)`,
+        gap: "10px",
+      }}
+    >
       {images.map((image, index) =>
         image.show ? (
-          <img src={image.url} />
+          <img src={image.url} key={index} alt={`image-${index}`} />
         ) : (
           <div
+            key={index}
             className="imagePlaceholder"
             onClick={() => handleImageClick(index)}
           ></div>
