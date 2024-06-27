@@ -1,3 +1,21 @@
+.container {
+  display: flex;
+  padding: 1rem;
+}
+
+.imagesWrapper {
+  flex: 2; /* Takes a larger portion of the width */
+}
+
+.sidebar {
+  flex: 1; /* Takes a smaller portion of the width */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
 img {
   width: 125px;
   height: 125px;
@@ -19,8 +37,7 @@ img {
 }
 
 .imagesWrapper {
-  max-width: 50%;
-  margin: auto;
+  margin: 4rem auto auto auto;
 }
 
 .imagesWrapper div, img {
