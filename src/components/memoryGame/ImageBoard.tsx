@@ -1,7 +1,7 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { ImageType } from "./images";
-import getUrlTime from "../../utils/getUrlTime";
 import { GameBoard } from "../../classes/GameBoard";
+import { preloadImages, getUrlTime } from "../../utils";
 
 type ImageBoardProps = {
   initialImages: ImageType[];
@@ -20,6 +20,7 @@ const ImageBoard: FC<ImageBoardProps> = ({ initialImages, resetGame }) => {
   const [isRunning, setIsRunning] = useState(false);
   const [resetUrlTime, setResetUrlTime] = useState(false);
   const [gameBoard, setGameBoard] = useState<GameBoard>();
+  const imagesRef = useRef(images);
 
   const showImage = (index: number) => {
     const updatedImages: ImageType[] = images.map((image, i) => {
@@ -113,6 +114,14 @@ const ImageBoard: FC<ImageBoardProps> = ({ initialImages, resetGame }) => {
     setResetUrlTime((prevState) => !prevState);
   }, [initialImages]);
 
+  // This useEffect runs only once when the component mounts because its
+  // dependency array is empty ([]). It uses imagesRef.current to access
+  // the images array for preloading.
+  useEffect(() => {
+    const imageUrls = imagesRef.current.map((image) => image.url);
+    preloadImages(imageUrls);
+  }, []);
+
   return (
     <>
       {gameBoard !== null && gameBoard !== undefined && (
@@ -128,7 +137,13 @@ const ImageBoard: FC<ImageBoardProps> = ({ initialImages, resetGame }) => {
           >
             {images.map((image, index) =>
               image.show ? (
-                <img src={image.url} key={index} alt={`image-${index}`} />
+                <img
+                  src={image.url}
+                  key={index}
+                  alt={`image-${index}`}
+                  height="125"
+                  width="125"
+                />
               ) : (
                 <div
                   key={index}
