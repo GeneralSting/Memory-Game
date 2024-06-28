@@ -4,4 +4,4 @@ import MidMode from "./MidMode";
 import PageNotFound from "./PageNotFound";
 import Welcome from "./Welcome";
 
-export { EasyMode, HardMode, MidMode, PageNotFound };
+export { Welcome, EasyMode, HardMode, MidMode, PageNotFound };

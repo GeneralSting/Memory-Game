@@ -1,5 +1,4 @@
-import { EasyMode, HardMode, MidMode, PageNotFound } from "../pages";
-import Welcome from "../pages/Welcome";
+import { EasyMode, HardMode, MidMode, PageNotFound, Welcome } from "../pages";
 import { AppRoute } from "./AppRoute";
 
 const appRoutes: AppRoute[] = [

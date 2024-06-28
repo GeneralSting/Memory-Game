@@ -4,11 +4,11 @@ import ImageBoard from "./ImageBoard";
 import { FC, useCallback, useEffect, useState } from "react";
 import { ImageType } from "./images";
 
-type Props = {
+type MemoryGameProps = {
   images: ImageType[];
 };
 
-const MemoryGame: FC<Props> = ({ images }) => {
+const MemoryGame: FC<MemoryGameProps> = ({ images }) => {
   const [shuffledImages, setShuffledImages] = useState<ImageType[]>([]);
 
   const shuffleImages = useCallback(() => {
