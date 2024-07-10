@@ -1,8 +1,9 @@
+import { useMemo } from "react";
 import MemoryGame from "../components/memoryGame/MemoryGame";
 import { shuffleGameImages } from "../utils";
 
 const EasyMode = () => {
-  const gameImages = shuffleGameImages(6);
+  const gameImages = useMemo(() => shuffleGameImages(6), []);
 
   return (
     <>

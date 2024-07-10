@@ -1,4 +1,4 @@
-import { ImageType } from "../components/memoryGame/images";
+import { ImageType } from "../types/images";
 import images from "../images.json";
 import { shuffle } from "lodash";
 

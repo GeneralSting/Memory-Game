@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { GameMode } from "../classes/GameMode";
 import GameModeComponent from "../components/GameMode";
+import { GameDifficultyFactor } from "../types";
+import gameModeFactory from "../utils/gameModeFactory";
 
-const gameModes: GameMode[] = [
-  new GameMode("Easy", "6 pairs", "game-mode-easy"),
-  new GameMode("Mid", "10 pairs", "game-mode-mid"),
-  new GameMode("Hard", "17 pairs", "game-mode-hard"),
-];
+const availableModes: GameDifficultyFactor = ["Easy", "Mid", "Hard"];
+const gameModes: GameMode[] = gameModeFactory(availableModes);
 
 const Welcome = () => {
   const [selected, setSelected] = useState<number | null>(null);

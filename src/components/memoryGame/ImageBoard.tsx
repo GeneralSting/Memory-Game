@@ -1,17 +1,11 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { ImageType } from "./images";
 import { GameBoard } from "../../classes/GameBoard";
 import { preloadImages, getUrlTime } from "../../utils";
-
-type ImageBoardProps = {
-  initialImages: ImageType[];
-  resetGame: () => void;
-};
-
-type GameResult = 0 | 1 | 2 | 3;
+import { GameResult, ImageBoardProps, Images } from "../../types";
 
 const ImageBoard: FC<ImageBoardProps> = ({ initialImages, resetGame }) => {
-  const [images, setImages] = useState<ImageType[]>(initialImages);
+
+  const [images, setImages] = useState<Images[]>(initialImages);
   const [firstFlipped, setFirstFlipped] = useState<number | null>(null);
   const [clickEnabled, setClickEnabled] = useState<boolean>(true);
   const [pairsFound, setPairsFound] = useState<number>(0);
@@ -23,7 +17,7 @@ const ImageBoard: FC<ImageBoardProps> = ({ initialImages, resetGame }) => {
   const imagesRef = useRef(images);
 
   const showImage = (index: number) => {
-    const updatedImages: ImageType[] = images.map((image, i) => {
+    const updatedImages: Images[] = images.map((image, i) => {
       if (i === index) {
         return { ...image, show: true };
       }
@@ -33,7 +27,7 @@ const ImageBoard: FC<ImageBoardProps> = ({ initialImages, resetGame }) => {
   };
 
   const hideImages = (firstIndex: number, secondIndex: number) => {
-    const updatedImages: ImageType[] = images.map((image, i) => {
+    const updatedImages: Images[] = images.map((image, i) => {
       if (i === firstIndex || i === secondIndex) {
         return { ...image, show: false };
       }

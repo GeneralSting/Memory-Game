@@ -1,4 +1,4 @@
-type GameDifficulty = "Easy" | "Mid" | "Hard";
+import { GameDifficulty } from "../types";
 
 export class GameMode {
   private difficulty: GameDifficulty;
