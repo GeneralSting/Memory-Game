@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { GameMode } from "../classes/GameMode";
 import GameModeComponent from "../components/GameMode";
 import { GameDifficultyFactor } from "../types";
 import gameModeFactory from "../utils/gameModeFactory";
+import { GameMode } from "../classes";
 
 const availableModes: GameDifficultyFactor = ["Easy", "Mid", "Hard"];
 const gameModes: GameMode[] = gameModeFactory(availableModes);
