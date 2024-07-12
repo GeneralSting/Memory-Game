@@ -13,11 +13,17 @@ const ImageBoard: FC<ImageBoardProps> = ({ initialImages, resetGame }) => {
   const firstFlippedRef = useRef<number | null>(null);
   const pairsFoundRef = useRef<number>(0);
   const imagesRef = useRef(images);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const gameBoard = useMemo(
+  const gameBoard = useMemo<GameBoard>(
     () => new GameBoard(initialImages.length),
     [initialImages.length]
   );
+
+  const isGameTimer = useMemo<boolean>(() => {
+    const urlTime = getUrlTime();
+    return urlTime.minutes !== 0 || urlTime.seconds !== 0;
+  }, []);
 
   const updateFirstFlipped = useCallback((value: null | number) => {
     firstFlippedRef.current = value;
@@ -48,6 +54,29 @@ const ImageBoard: FC<ImageBoardProps> = ({ initialImages, resetGame }) => {
     return updatedImages;
   };
 
+  const startGameTime = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+
+    timerRef.current = setInterval(() => {
+      setTime((prevTime) => {
+        const { minutes, seconds } = prevTime;
+        if (minutes === 0 && seconds === 0) {
+          clearInterval(timerRef.current!);
+          setClickEnabled(false);
+          setGameResult(3);
+          return { minutes: 0, seconds: 0 };
+        } else if (seconds > 0) {
+          return { minutes, seconds: seconds - 1 };
+        } else if (seconds === 0 && minutes > 0) {
+          return { minutes: minutes - 1, seconds: 59 };
+        }
+        return prevTime;
+      });
+    }, 1000);
+  }, []);
+
   const handleImageClick = (index: number) => {
     setGameResult(1);
     setImages(showImage(index));
@@ -74,32 +103,26 @@ const ImageBoard: FC<ImageBoardProps> = ({ initialImages, resetGame }) => {
     setImages(initialImages);
     setGameResult(0);
     resetFoundedPairs();
+    updateFirstFlipped(null);
     setClickEnabled(true);
-  }, [initialImages, resetFoundedPairs]);
+  }, [initialImages, resetFoundedPairs, updateFirstFlipped]);
 
   useEffect(() => {
-    let timer: ReturnType<typeof setInterval>;
-    if (gameResult === 1) {
-      timer = setInterval(() => {
-        setTime((prevTime) => {
-          const { minutes, seconds } = prevTime;
-          if (minutes === 0 && seconds === 0) {
-            clearInterval(timer!);
-            alert("Time is up!");
-            setClickEnabled(false);
-            setGameResult(3);
-            return { minutes: 0, seconds: 0 };
-          } else if (seconds > 0) {
-            return { minutes, seconds: seconds - 1 };
-          } else if (seconds === 0 && minutes > 0) {
-            return { minutes: minutes - 1, seconds: 59 };
-          }
-          return prevTime;
-        });
-      }, 1000);
+    if (gameResult === 1 && isGameTimer) {
+      startGameTime();
     }
-    return () => clearInterval(timer);
-  }, [gameResult, time]);
+
+    if (gameResult === 3) {
+      alert("Time is up!");
+    }
+
+    return () => {
+      // Cleanup interval on unmount or dependency change
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [gameResult, isGameTimer, startGameTime]);
 
   useEffect(() => {
     const imageUrls = imagesRef.current.map((image) => image.url);
@@ -148,16 +171,15 @@ const ImageBoard: FC<ImageBoardProps> = ({ initialImages, resetGame }) => {
             )}
           </div>
           <div className="sidebar">
-            <div className="sidebar">
-              <div>
-                {String(time.minutes).padStart(2, "0")}:
-                {String(time.seconds).padStart(2, "0")}
-              </div>
-              <button onClick={resetGame}>reset game</button>
-              {gameResult === 0 && <div>Open first image to start</div>}
-              {gameResult === 2 && <div>Win</div>}
-              {gameResult === 3 && <div>Time is up!</div>}
+            <div>
+              {String(time.minutes).padStart(2, "0")}:
+              {String(time.seconds).padStart(2, "0")}
             </div>
+            <button onClick={resetGame}>reset game</button>
+            {gameResult === 0 && <div>Open first image to start</div>}
+            {gameResult === 1 && <div style={{ minHeight: "1rem" }}></div>}
+            {gameResult === 2 && <div>Win</div>}
+            {gameResult === 3 && <div>Time is up!</div>}
           </div>
         </div>
       )}
